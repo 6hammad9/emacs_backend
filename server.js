@@ -4,11 +4,13 @@ import dotenv from "dotenv";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url"; // Needed for __dirname in ES Modules
-
+import galleryRoutes from "./src/routes/galleryRoutes.js";
 import authRoutes from "./src/routes/authRoutes.js";
 import personRoutes from "./src/routes/personRoutes.js";
 import cameraRoutes from "./src/routes/cameraRoutes.js";
 import departmentRoutes from "./src/routes/departmentRoutes.js";
+import detectedFramesRoutes from "./src/routes/detectedFramesRoutes.js";
+import nonWhitelistedRoutes from "./src/routes/nonwhitelistedRoutes.js";
 
 // Fix __dirname in ES Modules
 const __filename = fileURLToPath(import.meta.url);
@@ -58,7 +60,22 @@ app.use("/api/users", authRoutes);
 app.use("/register-person", personRoutes);
 app.use("/api/cameras", cameraRoutes);
 app.use("/api/departments", departmentRoutes);
+app.use("/api/nonwhitelisted", nonWhitelistedRoutes);
 
+app.use(galleryRoutes);
+
+// Serve static folders
+app.use('/whitelisted', express.static('D:/New folder/OCR/detected/whitelisted'));
+
+// Serve unclear folder
+app.use('/unclear', express.static('D:/New folder/OCR/detected/unclear'));
+
+// Serve notwhitelisted folder
+app.use('/notwhitelisted', express.static('D:/New folder/OCR/detected/notwhitelisted'));
+
+
+app.use("/api/detectedframes", detectedFramesRoutes);
+app.use('/whitelisted', express.static('D:/New folder/OCR/whitelisted'));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);

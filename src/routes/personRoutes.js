@@ -5,6 +5,8 @@ import {
   getAllPersons,
   updatePerson,
   deletePerson,
+  getPersonWithPictures,
+  getAllPersonsWithPictures,
 } from "../controllers/personController.js";
 
 const router = express.Router();
@@ -17,5 +19,8 @@ router.post("/", upload.single("image"), registerPerson);
 router.get("/", getAllPersons);
 router.put("/:id", upload.single("image"), updatePerson); // Update person
 router.delete("/:id", deletePerson); // Delete person
+router.get("/:id", getPersonWithPictures);
+// in personRoutes.js
+router.get("/with-pictures", getAllPersonsWithPictures);
 
 export default router;
